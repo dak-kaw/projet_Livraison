@@ -5,7 +5,7 @@ Avion::Avion(): Transporteur("Avion"){
     vitesse = 750;
     coutParKm = 5.6;
     coutParTonne = 200.0;
-    capaciteMax = 10000.0;
+    capaciteMax = 100000.0;
 }
 
 bool Avion::canDeliver(const Colis& c) const {

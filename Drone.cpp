@@ -3,7 +3,7 @@
 
 Drone::Drone(): Transporteur("Drone"){
     capaciteMax = 4;
-    vitesse = 60;
+    vitesse = 80;
     coutParKm = 5.0;
     coutParKg = 1.2;
 }

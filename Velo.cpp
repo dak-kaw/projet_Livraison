@@ -4,7 +4,7 @@
 Velo::Velo(): Transporteur("Velo"){
     capaciteMax = 15;
     vitesse = 20;
-    coutParKm = 1.2;
+    coutParKm = 1.12;
     coutParKg = 1.5;
 }
        
