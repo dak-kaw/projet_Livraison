@@ -14,9 +14,9 @@ int main() {
 
     vector<Transporteur*> ts;
 
-    ts.push_back(new Velo());
     ts.push_back(new Camion());
     ts.push_back(new Drone());
+    ts.push_back(new Velo());
     ts.push_back(new Avion());
 
     Colis c(4, 20, 8, 3, TypeColis::standard, 50, false);
