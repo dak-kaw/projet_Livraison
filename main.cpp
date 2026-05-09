@@ -19,7 +19,7 @@ int main() {
     ts.push_back(new Drone());
     ts.push_back(new Avion());
 
-    Colis c(4, 10, 5, 2, TypeColis::standard, 50, false);
+    Colis c(4, 20, 8, 3, TypeColis::standard, 50, false);
 
     Transporteur* t = SystemeLivraison::choisirTransporteur(c, ts);
 
