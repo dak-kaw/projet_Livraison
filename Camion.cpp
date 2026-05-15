@@ -4,7 +4,7 @@
 Camion::Camion(): Transporteur("Camion"){
     capaciteMax= 2500;
     vitesse = 80;
-    coutParKm = 3.2;
+    coutParKm = 3.8;
     coutParKg = 2.3;
 }
 
