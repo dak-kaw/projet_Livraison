@@ -2,14 +2,17 @@
 #include <iostream>
 using namespace std;
 
-ColisFragile::ColisFragile(float pd, float lo, float la, float h)
-    : Colis(pd, lo, la, h, TypeColis::fragile) {}
+ColisFragile::ColisFragile(float pd, float lo, float la, float h, int niveau)
+    : Colis(pd, lo, la, h, TypeColis::Fragile),
+    niveauFragilite(niveau)
+{}
 
-void ColisFragile::afficher() const {
-    cout << "Colis Fragile " << endl;
-    cout << *this;
+int ColisFragile::getNiveau() const {
+    return niveauFragilite;
 }
 
-bool ColisFragile::estFragile() const {
-    return true;
+void ColisFragile::afficher() const {
+    cout << "=== Colis Fragile (niveau "
+        << niveauFragilite << "/3) ===\n";
+    cout << *this;
 }
