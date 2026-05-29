@@ -2,13 +2,19 @@
 
 Transporteur* SystemeLivraison::choisirTransporteur(
     const Colis& colis,
-    const vector<Transporteur*>& transporteurs) {
+    const std::vector<Transporteur*>& transporteurs)
+{
+    Transporteur* meilleur = nullptr;
+    double coutMin = -1;
 
     for (auto t : transporteurs) {
-        if (t->canDeliver(colis)) {
-            return t;
+        if (!t->canDeliver(colis)) continue;
+
+        double cout = t->computeCost(colis);
+        if (coutMin < 0 || cout < coutMin) {
+            coutMin  = cout;
+            meilleur = t;
         }
     }
-
-    return nullptr;
+    return meilleur;  
 }
