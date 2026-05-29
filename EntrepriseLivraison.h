@@ -9,7 +9,7 @@ class Colis;
 class Transporteur;
 
 // ============================================================
-// Classe EntrepriseLivraison  (Étudiante 3)
+// Classe EntrepriseLivraison  
 // Classe centrale : gère toutes les livraisons de l'entreprise
 // ============================================================
 class EntrepriseLivraison {
