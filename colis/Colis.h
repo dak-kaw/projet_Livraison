@@ -20,12 +20,12 @@ protected:
 public:
     Colis();
     Colis(float pd,  float lo, float la, float h,TypeColis ty);
-    float getVolum()const;
+    float getVolume()const;
     float getPoids()const;
     TypeColis getType()const;
     string getId()const;
 
-    void setVolum(float vl);
+    void setVolume(float vl);
     void setPoids(float pd);
     void setType(TypeColis ty);
     void setId(string Id);
