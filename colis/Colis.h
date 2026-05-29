@@ -1,37 +1,34 @@
 #pragma once
-#include<string.h>
+#include<string>
 #include <iostream>
-using namespace std;
-
 
 enum class TypeColis{
-    standard,fragile
+    Standard,Fragile
 };
 class Colis
 {
 protected:
-    float volum;
+    float volume;
     float poids;       // en kg
-    float longeur;    // en cm
+    float longueur;    // en cm
     float largeur;
     float hauteur;
     TypeColis type;
     string IdColis;
     static int compteur; 
-    int distance;
 
 public:
     Colis();
     Colis(float pd,  float lo, float la, float h,TypeColis ty);
-    float getvolum()const;
-    float getpoids()const;
-    TypeColis gettype()const;
-    string getIdColis()const;
+    float getVolum()const;
+    float getPoids()const;
+    TypeColis getType()const;
+    string getId()const;
 
-    void setvolum(float vl);
-    void setpoids(float pd);
-    void settype(TypeColis ty);
-    void setIdColis(string Id);
+    void setVolum(float vl);
+    void setPoids(float pd);
+    void setType(TypeColis ty);
+    void setId(string Id);
 
     virtual void afficher() const = 0;
 
