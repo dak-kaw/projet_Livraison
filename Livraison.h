@@ -8,7 +8,7 @@ class Colis;
 class Transporteur;
 
 // ============================================================
-// Classe Livraison  (Étudiante 3)
+// Classe Livraison  
 // Associe un Colis à un Transporteur avec un état et un historique
 // ============================================================
 class Livraison {
