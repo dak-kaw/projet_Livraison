@@ -6,14 +6,14 @@ int Colis::compteur = 0;
 Colis::Colis()
     : volume(0) , poids(0), longueur(0), largeur(0), hauteur(0),
         type(TypeColis::Standard),
-        IdColis("")
+        IdColis(""), distance(0)
 {}        
 
 // Constructeur paramétré
-Colis::Colis(float pd, float lo, float la, float h, TypeColis ty)
+Colis::Colis(float pd, float lo, float la, float h, TypeColis ty, int d)
     : poids(pd), longueur(lo), largeur(la), haiteur(h),
     volume(lo * la *h),
-    type(ty)
+    type(ty), distance(d)
 {
     IdColis = "PKG-" + std::to_string(++compteur);
 }
@@ -31,20 +31,22 @@ TypeColis Colis::getType()const {
 std::string Colis::getId()const {
     return IdColis;
 }
+int Colis::getDistance() const {
+    return distance;
+}
 
 // Setters
 void Colis::setVolume(float vl){
     if (vl > 0) volume = vl;
 }
-void Colis::setpoids(float pd){
+void Colis::setPoids(float pd){
     if (pd > 0) poids = pd;
 }
 void Colis::setType(TypeColis ty){
     type = ty;
 }
-void Colis::setIdColis(string id) {
-    IdColis = id;
-}
+void Colis::setDistance(int d) { if(d>=0) distance=d;}
+
 
 bool Colis::operator==(const Colis& other)const{
         return IdColis == other.IdColis ;
