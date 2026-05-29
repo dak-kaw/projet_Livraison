@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
-
-#include "Colis.h"
+#include <memory> // pour unique_ptr
+#include "ColisStandard.h"
+#include "ColisFragile.h"
 #include "Velo.h"
 #include "Camion.h"
 #include "Drone.h"
@@ -12,24 +13,27 @@ using namespace std;
 
 int main() {
 
-    vector<Transporteur*> ts;
+    std::vector<std::unique_ptr<Transporteur>> ts;
+    ts.push_back(std::make_unique<Camion>());
+    ts.push_back(std::make_unique<Drone>());
+    ts.push_back(std::make_unique<Velo>());
+    ts.push_back(std::make_unique<Avion>());
 
-    ts.push_back(new Camion());
-    ts.push_back(new Drone());
-    ts.push_back(new Velo());
-    ts.push_back(new Avion());
+    // Conversion en vector de raw pointers pour choisirTransporteur
+    std::vector<Transporteur*> rawTs;
+    for (const auto& t : ts) rawTs.push_back(t.get());
 
-    Colis c(9, 20, 8, 3, TypeColis::standard, 50, false);
+    ColisStandard c(9.0f, 20.0f, 8.0f, 3.0f, 50);
 
-    Transporteur* t = SystemeLivraison::choisirTransporteur(c, ts);
+    Transporteur* t = SystemeLivraison::choisirTransporteur(c, rawTs);
 
     if (t) {
-        cout << "Transporteur: " << t->getName() << endl;
+        cout << "Transporteur: " << t->getNom() << endl;
         cout << "Cout: " << t->computeCost(c) << endl;
         cout << "Delai: " << t->computeDelay(c) << endl;
-    }
-
-    for (auto t : ts) delete t;
+    }else {
+        cout << "Aucun transporteur disponible.\n";
+    }    
 
     return 0;
 }
