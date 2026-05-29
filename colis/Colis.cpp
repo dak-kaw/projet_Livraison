@@ -1,60 +1,63 @@
 #include "Colis.h"
+
 int Colis::compteur = 0;
-Colis::Colis(){
-    volum = 0;
-    poids = 0;
-    longeur = largeur = hauteur = 0;
-    type = TypeColis::standard;
-    IdColis = "";
-}
-Colis::Colis(float pd, float lo, float la, float h, TypeColis ty){
-    longeur = lo;
-    largeur = la;
-    hauteur = h;
-    poids = pd;
-    type = ty;
 
-    volum = longeur * largeur * hauteur;
+// Constructeur par défaut
+Colis::Colis()
+    : volume(0) , poids(0), longueur(0), largeur(0), hauteur(0),
+        type(TypeColis::Standard),
+        IdColis("")
+{}        
 
-    this->IdColis = "PKG-" + std::to_string(++compteur);
+// Constructeur paramétré
+Colis::Colis(float pd, float lo, float la, float h, TypeColis ty)
+    : poids(pd), longueur(lo), largeur(la), haiteur(h),
+    volume(lo * la *h),
+    type(ty)
+{
+    IdColis = "PKG-" + std::to_string(++compteur);
 }
-float Colis::getvolum()const{
-    return volum;
+
+// Getters
+float Colis::getVolume()const{
+    return volume;
 }
-string Colis::getIdColis()const{
-    return IdColis;
-}
-float Colis::getpoids()const{
+float Colis::getPoids()const{
     return poids;
 }
-TypeColis Colis::gettype()const {
+TypeColis Colis::getType()const {
     return type;
 }
-void Colis::setvolum(float vl){
-    volum = vl;
+std::string Colis::getId()const {
+    return IdColis;
+}
+
+// Setters
+void Colis::setVolume(float vl){
+    if (vl > 0) volume = vl;
 }
 void Colis::setpoids(float pd){
-    poids = pd;
+    if (pd > 0) poids = pd;
 }
-void Colis::settype(TypeColis ty){
+void Colis::setType(TypeColis ty){
     type = ty;
 }
 void Colis::setIdColis(string id) {
     IdColis = id;
 }
+
 bool Colis::operator==(const Colis& other)const{
         return IdColis == other.IdColis ;
 }
-std::ostream& operator<<(ostream& os, const Colis& col){
-    
-    os << "Poids " << col.poids << endl;
-    os << "Volume " << col.volum << endl;
-    os << "ID: " << col.IdColis << endl;
-    if (col.type == TypeColis::standard)
-        os << "Type: Standard" << endl;
-    else
-        os << "Type: Fragile" << endl;
 
+std::ostream& operator<<(std::ostream& os, const Colis& col){
+    os << "ID     : " << col.IdColis << "\n"
+       << "Poids  : " << col.poids   << " kg\n"
+       << "Volume : " << col.volume  << " cm³\n"
+       << "Type   : "
+       << (col.type == TypeColis::Standard ? "Standard" : "Fragile")
+       << "\n";
+    
     return os;
 }
 
