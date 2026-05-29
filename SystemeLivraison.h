@@ -5,8 +5,6 @@
 #include "Transporteur.h"
 #include "Colis.h"
 
-using namespace std;
-
 class SystemeLivraison {
 public:
     static Transporteur* choisirTransporteur(
