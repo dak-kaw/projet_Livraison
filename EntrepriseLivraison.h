@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <map>
 #include <string>
 #include "Livraison.h"
 
@@ -14,13 +13,14 @@ class Transporteur;
 // ============================================================
 class EntrepriseLivraison {
 private:
-    std::vector<Livraison>      livraisons;     // Liste de toutes les livraisons
+    std::vector<Livraison*>      livraisons;     // Liste de toutes les livraisons
     std::vector<Transporteur*>  transporteurs;  // Liste des transporteurs disponibles
     int                         prochainId;     // Compteur auto-incrémenté pour les IDs
 
 public:
     // Constructeur
     EntrepriseLivraison();
+    ~EntrepriseLivraison(); 
 
     // Ajoute un transporteur disponible dans le système
     void ajouterTransporteur(Transporteur* t);
