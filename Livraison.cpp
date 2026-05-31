@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/Livraison.h"
+#include <stdexcept>
 
 // ============================================================
 // Constructeur
@@ -29,6 +30,11 @@ const std::vector<std::string>& Livraison::getHistorique() const {
 // setEtat — met à jour l'état et enregistre la transition
 // ============================================================
 void Livraison::setEtat(EtatLivraison nouvelEtat, const std::string& date) {
+    
+    if (static_cast<int>(nouvelEtat) <= static_cast<int>(etat)) {
+        throw std::logic_error(
+            "Transition invalide : impossible de reculer l'état");
+    }
     std::string ancienEtat = etatToString(etat);
     etat = nouvelEtat;
     std::string nouvelEtatStr = etatToString(nouvelEtat);
