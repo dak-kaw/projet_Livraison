@@ -1,6 +1,8 @@
 #include <iostream>
 #include <map>
 #include "../include/EntrepriseLivraison.h"
+#include "../include/Transporteur.h" 
+#include "../include/Colis.h"
 
 // On inclut les interfaces minimales nécessaires pour les appels polymorphiques
 // (ces classes seront fournies par les autres étudiantes)
@@ -10,6 +12,10 @@
 // Constructeur
 // ============================================================
 EntrepriseLivraison::EntrepriseLivraison() : prochainId(1) {}
+
+EntrepriseLivraison::~EntrepriseLivraison() {
+    for (Livraison* l : livraisons) delete l;
+}
 
 // ============================================================
 // ajouterTransporteur
@@ -24,13 +30,16 @@ void EntrepriseLivraison::ajouterTransporteur(Transporteur* t) {
 // ============================================================
 Livraison* EntrepriseLivraison::creerLivraison(Colis* colis, const std::string& date) {
     Transporteur* choisi = nullptr;
+    double        coutMin = -1;
 
     // On parcourt les transporteurs et on prend le premier qui peut livrer ce colis
     for (Transporteur* t : transporteurs) {
-        if (t->canDeliver(colis)) {   // méthode virtuelle → polymorphisme
-            choisi = t;
-            break;
-        }
+        if (!t->canDeliver(*colis)) {   // méthode virtuelle → polymorphisme
+          double cout = t->computeCost(*colis);
+        if (coutMin < 0 || cout < coutMin) {
+            coutMin = cout;
+            choisi  = t;
+        }   
     }
 
     if (choisi == nullptr) {
@@ -39,11 +48,10 @@ Livraison* EntrepriseLivraison::creerLivraison(Colis* colis, const std::string& 
     }
 
     // Création de la livraison et ajout à la liste
-    livraisons.emplace_back(prochainId++, colis, choisi, date);
-    std::cout << "✔ Livraison #" << livraisons.back().getId()
-              << " créée avec succès.\n";
-
-    return &livraisons.back();
+    Livraison* liv = new Livraison(prochainId++, colis, choisi, date);
+    livraisons.push_back(liv);
+    std::cout << "Livraison #" << liv->getId() << " créée.\n";
+    return liv;
 }
 
 // ============================================================
@@ -64,10 +72,9 @@ bool EntrepriseLivraison::mettreAJourEtat(int idLivraison,
 // ============================================================
 // chercherParId — retourne un pointeur ou nullptr
 // ============================================================
-Livraison* EntrepriseLivraison::chercherParId(int idLivraison) {
-    for (auto& l : livraisons) {
-        if (l.getId() == idLivraison) return &l;
-    }
+Livraison* EntrepriseLivraison::chercherParId(int id) {
+    for (Livraison* l : livraisons)
+        if (l->getId() == id) return l;
     return nullptr;
 }
 
@@ -80,7 +87,7 @@ void EntrepriseLivraison::afficherToutes() const {
         return;
     }
     std::cout << "\n=== Liste des livraisons (" << livraisons.size() << ") ===\n";
-    for (const auto& l : livraisons) {
+    for (const Livraison* l : livraisons) {
         std::cout << l << "\n";   // utilise operator<<
     }
 }
