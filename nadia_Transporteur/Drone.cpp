@@ -9,7 +9,7 @@ Drone::Drone(): Transporteur("Drone"){
 }
 
 bool Drone::canDeliver(const Colis& c) const {
-    return c.getpoids() <= capaciteMax && c.gettype() != TypeColis::fragile;
+    return c.getPoids() <= capaciteMax && c.getType() != TypeColis::Fragile;
 }
 
 double Drone::computeCost(const Colis& c) const {

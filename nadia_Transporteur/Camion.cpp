@@ -9,12 +9,12 @@ Camion::Camion(): Transporteur("Camion"){
 }
 
 bool Camion::canDeliver(const Colis& c) const {
-    return c.getpoids() <= capaciteMax;
+    return c.getPoids() <= capaciteMax;
 }
 
 double Camion::computeCost(const Colis& c) const {
     return c.getDistance() * coutParKm +
-           c.getpoids() * coutParKg;
+           c.getPoids() * coutParKg;
 }
 
 double Camion::computeDelay(const Colis& c) const {

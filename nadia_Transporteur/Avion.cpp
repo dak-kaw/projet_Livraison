@@ -9,7 +9,7 @@ Avion::Avion(): Transporteur("Avion"){
 }
 
 bool Avion::canDeliver(const Colis& c) const {
-    return c.getpoids() <= capaciteMax;
+    return c.getPoids() <= capaciteMax;
 }
 
 double Avion::computeCost(const Colis& c) const {

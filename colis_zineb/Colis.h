@@ -7,7 +7,7 @@ enum class TypeColis{
 };  
 
 class Colis
-{
+{ 
 protected:
     float volume;
     float poids;       // en kg
@@ -15,7 +15,7 @@ protected:
     float largeur;
     float hauteur;
     TypeColis type;
-    string IdColis;
+    std::string IdColis;
     int distance;
     static int compteur; 
 
@@ -26,8 +26,8 @@ public:
     float getVolume()  const;
     float getPoids()  const;
     TypeColis getType()  const;
-    string getId()  const;
-    int getDistence()  const;
+    std::string getId()  const;
+    int getDistance()  const;
 
     void setVolume(float vl);
     void setPoids(float pd);

@@ -3,34 +3,37 @@
 #include <numeric>    // std::accumulate
 #include <iomanip>    // std::fixed, std::setprecision
 #include <algorithm>  // std::count_if
+#include "../nadia_Transporteur/Transporteur.h"
+#include "../imane_Entreprise/Livraison.h"
+ 
 
-Rapport::Rapport(const std::vector<Livraison>& livs, std::string date)
+Rapport::Rapport(const std::vector<Livraison*>& livs, std::string date)
     : livraisons(livs), dateGeneration(date) {}
  
-// Compte les livraisons dans un état donné
+// Compte les livraisons dans un etat donne
 int Rapport::compterParEtat(EtatLivraison e) const {
     return std::count_if(
         livraisons.begin(), livraisons.end(),
-        [e](const Livraison& l) { return l.getEtat() == e; }
+        [e](const Livraison* l) { return l->getEtat() == e; }
     );
 }
 
-// Somme tous les coûts avec std::accumulate
+// Somme tous les couts avec std::accumulate
 float Rapport::calculerCoutTotal() const {
     return std::accumulate(
         livraisons.begin(), livraisons.end(), 0.0f,
-        [](float somme, const Livraison& l) {
-            return somme + l.getCout();
+        [](float somme, const Livraison* l) {
+            return somme + l->getCout();
         }
     );
 }
 
-// Délai moyen : somme des délais / nombre de livraisons
+// Delai moyen : somme des delais / nombre de livraisons
 float Rapport::calculerDelaiMoyen() const {
     if (livraisons.empty()) return 0.0f;
     float total = std::accumulate(
         livraisons.begin(), livraisons.end(), 0.0f,
-        [](float s, const Livraison& l) { return s + l.getDelai(); }
+        [](float s, const Livraison* l) { return s + l->getDelai(); }
     );
     return total / livraisons.size();
 }
@@ -51,16 +54,16 @@ void Rapport::afficherResume() const {
             << "  Total livraisons : " << total   << "\n"
             << "  En attente       : " << attente << "\n"
             << "  En transit       : " << transit << "\n"
-            << "  Livrées          : " << livrees << "\n"
-            << "  Coût total       : " << calculerCoutTotal()  << " DH\n"
-            << "  Coût moyen       : " << calculerCoutMoyen()  << " DH\n"
-            << "  Délai moyen      : " << calculerDelaiMoyen() << " j\n";
+            << "  Livrees         : " << livrees << "\n"
+            << "  Cout total      : " << calculerCoutTotal()  << " DH\n"
+            << "  Cout moyen      : " << calculerCoutMoyen()  << " DH\n"
+            << "  Delai moyen     : " << calculerDelaiMoyen() << " j\n";
 }
 
 void Rapport::afficherDetail() const {
-    std::cout << "== DÉTAIL DES LIVRAISONS ==\n";
+        std::cout << "== DETAIL DES LIVRAISONS ==\n";
     for (const auto& l : livraisons) {
-        l.afficher();
+        l->afficher();
         std::cout << "  ________________\n";
     }
 }
@@ -68,8 +71,8 @@ void Rapport::afficherDetail() const {
 void Rapport::afficherHistorique() const {
     std::cout << "== HISTORIQUE COMPLET ==\n";
     for (const auto& l : livraisons) {
-        std::cout << "  Livraison " << l.getId() << ":\n";
-        for (const auto& ligne : l.getHistorique())
+        std::cout << "  Livraison " << l->getId() << ":\n";
+        for (const auto& ligne : l->getHistorique())
             std::cout << "    " << ligne << "\n";
     }
 }
@@ -84,31 +87,31 @@ void Rapport::exporterFichier(const std::string& nomFichier) const {
 
     fichier << std::fixed << std::setprecision(2);
     fichier << "==============================\n"
-            << " RAPPORT DE LIVRAISON — " << dateGeneration << "\n"
+            << " RAPPORT DE LIVRAISON - " << dateGeneration << "\n"
             << "==============================\n\n";
     
-    // Résumé statistique
-    fichier << "RÉSUMÉ\n"
+        // Resume statistique
+        fichier << "RESUME\n"
             << "  Total        : " << livraisons.size()       << "\n"
-            << "  Livrées      : " << compterParEtat(EtatLivraison::Livre) << "\n"
+            << "  Livrees      : " << compterParEtat(EtatLivraison::Livre) << "\n"
             << "  En transit   : " << compterParEtat(EtatLivraison::EnTransit) << "\n"
             << "  En attente   : " << compterParEtat(EtatLivraison::EnAttente) << "\n"
-            << "  Coût total   : " << calculerCoutTotal()  << " DH\n"
-            << "  Coût moyen   : " << calculerCoutMoyen()  << " DH\n"
-            << "  Délai moyen  : " << calculerDelaiMoyen() << " j\n\n";
+            << "  Cout total   : " << calculerCoutTotal()  << " DH\n"
+            << "  Cout moyen   : " << calculerCoutMoyen()  << " DH\n"
+            << "  Delai moyen  : " << calculerDelaiMoyen() << " j\n\n";
 
-    // Détail de chaque livraison + historique
-    fichier << "DÉTAIL\n";
-    for (const auto& l : livraisons) {
-        fichier << "  [" << l.getId() << "] "
-                << etatToString(l.getEtat()) << "\n"
-                << "  Transporteur : " << l.getTransporteur()->getNom() << "\n"
-                << "  Coût         : " << l.getCout()  << " DH\n"
-                << "  Délai        : " << l.getDelai() << " j\n";
-        for (const auto& h : l.getHistorique())
+        // Detail de chaque livraison + historique
+        fichier << "DETAIL\n";
+    for (const Livraison* l : livraisons) {
+        fichier << "  [" << l->getId() << "] "
+                << etatToString(l->getEtat()) << "\n"
+                << "  Transporteur : " << l->getTransporteur()->getNom() << "\n"
+                << "  Cout         : " << l->getCout()  << " DH\n"
+                << "  Delai        : " << l->getDelai() << " j\n";
+        for (const auto& h : l->getHistorique())
             fichier << "    " << h << "\n";
         fichier << "\n";
     }        
     fichier.close(); // fermeture explicite (bonne pratique)
-    std::cout << "Rapport exporté : " << nomFichier << "\n";
+    std::cout << "Rapport exporte : " << nomFichier << "\n";
 }

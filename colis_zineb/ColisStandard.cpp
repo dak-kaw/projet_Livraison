@@ -5,9 +5,9 @@ using namespace std;
 ColisStandard::ColisStandard()
     : Colis(), prioritaire(false) {}
 
-ColisStandard::ColisStandard(float pd, float lo, float la, float h, boll prio)
-    : Colis(pd, lo, la, h, TypeColis::Standard),
-    prioritaire(prio)
+ColisStandard::ColisStandard(float pd, float lo, float la, float h, bool prio)
+    : Colis(pd, lo, la, h, TypeColis::Standard, 0),
+      prioritaire(prio)
 {}
 
 bool ColisStandard::isPrioritaire() const {
@@ -15,7 +15,7 @@ bool ColisStandard::isPrioritaire() const {
 }
 
 void ColisStandard::afficher() const {
-    cout << "=== Colis Standard 
+    cout << "=== Colis Standard"
         << (prioritaire ? " [PRIORITAIRE]" : "")
         << "===\n";
     cout << *this;

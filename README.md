@@ -57,4 +57,24 @@ Etats possibles :
 - Git & GitHub
 
 ## Structure de projet 
-
+PROJET_LIVRAISON/
+├── CMakeLists.txt
+├── README.md
+├── build/
+├── colis_zineb/
+│   ├── Colis.h / Colis.cpp
+│   ├── ColisStandard.h / ColisStandard.cpp
+│   └── ColisFragile.h  / ColisFragile.cpp
+├── nadia_Transporteur/
+│   ├── Transporteur.h  / Transporteur.cpp
+│   ├── Velo.h  / Velo.cpp
+│   ├── Camion.h / Camion.cpp
+│   ├── Drone.h  / Drone.cpp
+│   └── Avion.h  / Avion.cpp
+├── imane_Entreprise/
+│   ├── EtatLivraison.h
+│   ├── Livraison.h  / Livraison.cpp
+│   └── EntrepriseLivraison.h / EntrepriseLivraison.cpp
+└── kawtar_Rapport/
+    ├── Rapport.h / Rapport.cpp
+    └── main.cpp 

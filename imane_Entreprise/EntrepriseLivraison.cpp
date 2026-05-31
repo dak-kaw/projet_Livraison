@@ -1,12 +1,11 @@
 #include <iostream>
 #include <map>
-#include "../include/EntrepriseLivraison.h"
-#include "../include/Transporteur.h" 
-#include "../include/Colis.h"
+#include "EntrepriseLivraison.h"
+#include "../nadia_Transporteur/Transporteur.h"
+#include "../colis_zineb/Colis.h"
 
-// On inclut les interfaces minimales nécessaires pour les appels polymorphiques
-// (ces classes seront fournies par les autres étudiantes)
-// Pour que ce fichier compile seul, on suppose que Transporteur a canDeliver(Colis*)
+// Interfaces minimales necessaires pour les appels polymorphiques.
+// Pour que ce fichier compile seul, on suppose que Transporteur a canDeliver(Colis*).
 
 // ============================================================
 // Constructeur
@@ -17,6 +16,11 @@ EntrepriseLivraison::~EntrepriseLivraison() {
     for (Livraison* l : livraisons) delete l;
 }
 
+const std::vector<Livraison*>&
+EntrepriseLivraison::getLivraisons() const {
+    return livraisons;
+}
+
 // ============================================================
 // ajouterTransporteur
 // ============================================================
@@ -25,7 +29,7 @@ void EntrepriseLivraison::ajouterTransporteur(Transporteur* t) {
 }
 
 // ============================================================
-// creerLivraison — attribution automatique du transporteur
+// creerLivraison - attribution automatique du transporteur
 // Aucun if/else sur les types : on utilise canDeliver() (polymorphisme)
 // ============================================================
 Livraison* EntrepriseLivraison::creerLivraison(Colis* colis, const std::string& date) {
@@ -34,35 +38,36 @@ Livraison* EntrepriseLivraison::creerLivraison(Colis* colis, const std::string& 
 
     // On parcourt les transporteurs et on prend le premier qui peut livrer ce colis
     for (Transporteur* t : transporteurs) {
-        if (!t->canDeliver(*colis)) {   // méthode virtuelle → polymorphisme
-          double cout = t->computeCost(*colis);
-        if (coutMin < 0 || cout < coutMin) {
-            coutMin = cout;
-            choisi  = t;
-        }   
+        if (t->canDeliver(*colis)) {   // methode virtuelle -> polymorphisme
+            double cout = t->computeCost(*colis);
+            if (coutMin < 0 || cout < coutMin) {
+                coutMin = cout;
+                choisi  = t;
+            }
+        }
     }
 
     if (choisi == nullptr) {
-        std::cout << "⚠ Aucun transporteur disponible pour ce colis.\n";
+        std::cout << "Aucun transporteur disponible pour ce colis.\n";
         return nullptr;
     }
 
     // Création de la livraison et ajout à la liste
     Livraison* liv = new Livraison(prochainId++, colis, choisi, date);
     livraisons.push_back(liv);
-    std::cout << "Livraison #" << liv->getId() << " créée.\n";
+    std::cout << "Livraison #" << liv->getId() << " creee.\n";
     return liv;
 }
 
 // ============================================================
-// mettreAJourEtat — cherche par ID et change l'état
+// mettreAJourEtat - cherche par ID et change l'etat
 // ============================================================
 bool EntrepriseLivraison::mettreAJourEtat(int idLivraison,
                                            EtatLivraison nouvelEtat,
                                            const std::string& date) {
     Livraison* l = chercherParId(idLivraison);
     if (l == nullptr) {
-        std::cout << "⚠ Livraison #" << idLivraison << " introuvable.\n";
+        std::cout << "Livraison #" << idLivraison << " introuvable.\n";
         return false;
     }
     l->setEtat(nouvelEtat, date);
@@ -70,7 +75,7 @@ bool EntrepriseLivraison::mettreAJourEtat(int idLivraison,
 }
 
 // ============================================================
-// chercherParId — retourne un pointeur ou nullptr
+// chercherParId - retourne un pointeur ou nullptr
 // ============================================================
 Livraison* EntrepriseLivraison::chercherParId(int id) {
     for (Livraison* l : livraisons)
@@ -79,45 +84,42 @@ Livraison* EntrepriseLivraison::chercherParId(int id) {
 }
 
 // ============================================================
-// afficherToutes — liste toutes les livraisons
+// afficherToutes - liste toutes les livraisons
 // ============================================================
 void EntrepriseLivraison::afficherToutes() const {
     if (livraisons.empty()) {
-        std::cout << "Aucune livraison enregistrée.\n";
+        std::cout << "Aucune livraison enregistree.\n";
         return;
     }
     std::cout << "\n=== Liste des livraisons (" << livraisons.size() << ") ===\n";
     for (const Livraison* l : livraisons) {
-        std::cout << l << "\n";   // utilise operator<<
+        l->afficher();
     }
 }
 
 // ============================================================
-// genererRapport — statistiques et détail de chaque livraison
+// genererRapport - statistiques et detail de chaque livraison
 // ============================================================
 void EntrepriseLivraison::genererRapport() const {
-    // Comptage par état avec une map
+    // Comptage par etat avec une map
     std::map<EtatLivraison, int> compteur;
     compteur[EtatLivraison::EnAttente] = 0;
     compteur[EtatLivraison::EnTransit] = 0;
     compteur[EtatLivraison::Livre]     = 0;
 
-    for (const auto& l : livraisons) {
-        compteur[l.getEtat()]++;
+    for (const Livraison* l : livraisons) {
+        compteur[l->getEtat()]++;
     }
 
-    std::cout << "\n╔══════════════════════════════════════╗\n";
-    std::cout << "║        RAPPORT DE LIVRAISONS         ║\n";
-    std::cout << "╠══════════════════════════════════════╣\n";
-    std::cout << "║  Total       : " << livraisons.size() << "\n";
-    std::cout << "║  En attente  : " << compteur[EtatLivraison::EnAttente] << "\n";
-    std::cout << "║  En transit  : " << compteur[EtatLivraison::EnTransit] << "\n";
-    std::cout << "║  Livrés      : " << compteur[EtatLivraison::Livre]     << "\n";
-    std::cout << "╚══════════════════════════════════════╝\n";
+    std::cout << "\n=== RAPPORT DE LIVRAISONS ===\n";
+    std::cout << "Total       : " << livraisons.size() << "\n";
+    std::cout << "En attente  : " << compteur[EtatLivraison::EnAttente] << "\n";
+    std::cout << "En transit  : " << compteur[EtatLivraison::EnTransit] << "\n";
+    std::cout << "Livrees     : " << compteur[EtatLivraison::Livre]     << "\n";
 
-    // Détail complet avec historique
-    std::cout << "\n--- Détail des livraisons ---\n";
+    // Detail complet avec historique
+    std::cout << "\n--- Detail des livraisons ---\n";
     for (const auto& l : livraisons) {
-        l.afficher();
+        l->afficher();
     }
 }

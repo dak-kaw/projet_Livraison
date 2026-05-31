@@ -6,14 +6,14 @@
 
 class Rapport {
     private:
-        const std::vector<Livraison>& livraisons;
+        const std::vector<Livraison*>& livraisons;
         std::string dateGeneration;
         int   compterParEtat(EtatLivraison e) const;
         float calculerCoutTotal() const;
         float calculerDelaiMoyen() const;
         float calculerCoutMoyen() const;
     public:
-        Rapport(const std::vector<Livraison>& livs, std::string date);
+        Rapport(const std::vector<Livraison*>& livs, std::string date);
 
         // Affichage console
         void afficherResume()    const;

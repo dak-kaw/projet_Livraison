@@ -13,6 +13,8 @@ class Transporteur;
 // ============================================================
 class Livraison {
 private:
+    float coutTotal;       // Coût total de la livraison (calculé à partir du colis et du transporteur)
+    int   delaiJours;     // Délai de livraison en jours (calculé à partir du colis et du transporteur)
     int             id;             // Identifiant unique de la livraison
     Colis*          colis;          // Pointeur vers le colis à livrer
     Transporteur*   transporteur;   // Pointeur vers le transporteur assigné
@@ -23,6 +25,9 @@ private:
     std::vector<std::string> historiqueEtats;
 
 public:
+
+    float getCout()  const;
+    int   getDelai() const;
     // Constructeur
     Livraison(int id, Colis* colis, Transporteur* transporteur, const std::string& date);
 

@@ -16,7 +16,7 @@ inline std::string etatToString(EtatLivraison etat) {
     switch (etat) {
         case EtatLivraison::EnAttente:  return "En attente";
         case EtatLivraison::EnTransit:  return "En transit";
-        case EtatLivraison::Livre:      return "Livré";
+        case EtatLivraison::Livre:      return "Livree";
         default:                         return "Inconnu";
     }
 }

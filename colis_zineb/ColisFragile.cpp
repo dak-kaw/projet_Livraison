@@ -3,7 +3,7 @@
 using namespace std;
 
 ColisFragile::ColisFragile(float pd, float lo, float la, float h, int niveau)
-    : Colis(pd, lo, la, h, TypeColis::Fragile),
+    : Colis(pd, lo, la, h, TypeColis::Fragile, 0),
     niveauFragilite(niveau)
 {}
 

@@ -40,4 +40,6 @@ public:
 
     // Génère un rapport résumé (nombre par état, liste)
     void genererRapport() const;
+
+    const std::vector<Livraison*>& getLivraisons() const;
 };

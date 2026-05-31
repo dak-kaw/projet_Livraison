@@ -11,7 +11,7 @@ Colis::Colis()
 
 // Constructeur paramétré
 Colis::Colis(float pd, float lo, float la, float h, TypeColis ty, int d)
-    : poids(pd), longueur(lo), largeur(la), haiteur(h),
+    : poids(pd), longueur(lo), largeur(la), hauteur(h),
     volume(lo * la *h),
     type(ty), distance(d)
 {
@@ -55,7 +55,7 @@ bool Colis::operator==(const Colis& other)const{
 std::ostream& operator<<(std::ostream& os, const Colis& col){
     os << "ID     : " << col.IdColis << "\n"
        << "Poids  : " << col.poids   << " kg\n"
-       << "Volume : " << col.volume  << " cm³\n"
+    << "Volume : " << col.volume  << " cm3\n"
        << "Type   : "
        << (col.type == TypeColis::Standard ? "Standard" : "Fragile")
        << "\n";
